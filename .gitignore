@@ -1,0 +1,11 @@
+# Local config with real DB credentials — never commit this
+config.properties
+
+# Compiled output
+out/
+*.class
+
+# OS/editor junk
+.vscode/
+.DS_Store
+Thumbs.db

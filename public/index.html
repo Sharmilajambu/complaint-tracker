@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Complaint & Escalation Tracker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <h1>Campus Complaint &amp; Escalation Tracker</h1>
+      <p>Submit an issue — our system scores its priority and auto-escalates it if it goes unresolved.</p>
+    </div>
+    <div class="header-actions">
+      <span id="userBadge" class="user-badge hidden"></span>
+      <button id="logoutBtn" type="button" class="header-btn hidden">Logout</button>
+      <span id="serverStatus" class="status-pill offline">Checking...</span>
+    </div>
+  </div>
+</header>
+
+<!-- Auth gate: shown when not logged in -->
+<section id="authSection" class="auth-section">
+  <div class="auth-card">
+    <div class="auth-tabs">
+      <button type="button" id="tabLogin" class="auth-tab active">Login</button>
+      <button type="button" id="tabRegister" class="auth-tab">Register</button>
+    </div>
+
+    <form id="loginForm" class="auth-form">
+      <h2>Login</h2>
+      <label>Username
+        <input type="text" id="loginUsername" required autocomplete="username">
+      </label>
+      <label>Password
+        <input type="password" id="loginPassword" required autocomplete="current-password">
+      </label>
+      <button type="submit">Login</button>
+      <p id="loginMessage" class="msg"></p>
+    </form>
+
+    <form id="registerForm" class="auth-form hidden">
+      <h2>Student Registration</h2>
+      <p class="auth-hint">Student accounts only. Admin and authority logins are issued by the institution — not self-registered.</p>
+      <label>Full Name
+        <input type="text" id="regFullName" required placeholder="Your full name">
+      </label>
+      <label>Username
+        <input type="text" id="regUsername" required autocomplete="username" minlength="3">
+      </label>
+      <label>Password
+        <input type="password" id="regPassword" required autocomplete="new-password" minlength="6">
+      </label>
+      <label>Email <span class="optional">(for authority contact)</span>
+        <input type="email" id="regEmail" placeholder="you@campus.edu">
+      </label>
+      <label>Phone <span class="optional">(for authority contact)</span>
+        <input type="tel" id="regPhone" placeholder="+91...">
+      </label>
+      <button type="submit">Create Account</button>
+      <p id="registerMessage" class="msg"></p>
+    </form>
+  </div>
+</section>
+
+<!-- Main app: shown when logged in -->
+<main id="appMain" class="hidden">
+  <section class="stats-row">
+    <div class="stat-card"><span class="stat-num" id="statTotal">0</span><span class="stat-label">Total</span></div>
+    <div class="stat-card open"><span class="stat-num" id="statOpen">0</span><span class="stat-label">Open</span></div>
+    <div class="stat-card escalated"><span class="stat-num" id="statEscalated">0</span><span class="stat-label">Escalated</span></div>
+    <div class="stat-card resolved"><span class="stat-num" id="statResolved">0</span><span class="stat-label">Resolved</span></div>
+  </section>
+
+  <section class="form-card" id="submitSection">
+    <h2>Submit a Complaint</h2>
+    <p class="section-hint">Filed as <strong id="filedAsName"></strong> — name is taken from your account.</p>
+    <form id="complaintForm">
+      <label>Category
+        <select id="category" required>
+          <option value="mess">Mess / Food</option>
+          <option value="hostel">Hostel</option>
+          <option value="faculty">Faculty</option>
+          <option value="electrical">Electrical</option>
+          <option value="water">Water</option>
+          <option value="harassment">Harassment / Ragging</option>
+          <option value="other">Other</option>
+        </select>
+      </label>
+
+      <label>Description
+        <textarea id="description" rows="4" required placeholder="Describe the issue in detail..."></textarea>
+      </label>
+
+      <button type="submit" id="submitBtn">Submit Complaint</button>
+    </form>
+    <p id="formMessage" class="msg"></p>
+  </section>
+
+  <section class="dashboard">
+    <div class="dashboard-header">
+      <h2 id="complaintsTitle">My Complaints</h2>
+      <button id="refreshBtn" type="button">Refresh</button>
+    </div>
+    <div id="complaintList" class="complaint-list"></div>
+  </section>
+
+  <section class="dashboard hidden" id="escalatedSection">
+    <h2>Escalated Complaints</h2>
+    <p class="section-hint">Auto-escalated when a complaint passes its deadline without being resolved. Admin view only.</p>
+    <div id="escalatedList" class="complaint-list"></div>
+  </section>
+</main>
+
+<!-- Authority dashboard: separate from student/admin -->
+<main id="authorityMain" class="hidden">
+  <section class="form-card authority-profile-card">
+    <h2>Authority Profile</h2>
+    <div id="authorityProfile" class="authority-profile">
+      <p class="loading">Loading profile...</p>
+    </div>
+  </section>
+
+  <section class="dashboard">
+    <div class="dashboard-header">
+      <div>
+        <h2>Complaints Assigned to You</h2>
+        <p class="section-hint">Only open items at your escalation level and category. Resolve or contact the student below.</p>
+      </div>
+      <button id="authorityRefreshBtn" type="button">Refresh</button>
+    </div>
+    <div id="authorityComplaintList" class="complaint-list"></div>
+  </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
